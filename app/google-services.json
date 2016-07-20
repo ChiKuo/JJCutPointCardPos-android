@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "489378258734",
+    "firebase_url": "https://jjcutpointcard.firebaseio.com",
+    "project_id": "jjcutpointcard",
+    "storage_bucket": "jjcutpointcard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489378258734:android:470052b49da4da22",
+        "android_client_info": {
+          "package_name": "tw.chikuo.jjcutpointcardpos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "489378258734-6dfnb1tt5hhea8r3kfv86t3rrf9m6k7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tw.chikuo.jjcutpointcardpos",
+            "certificate_hash": "A9BB3BB0D3F4677396E554495AD5372822C1287C"
+          }
+        },
+        {
+          "client_id": "489378258734-6eq0j91c9os378psnihf5t4etacf4gvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBCH_Y3NYTcDW0LTbbqruaREDHl-X77C4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "489378258734-6eq0j91c9os378psnihf5t4etacf4gvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

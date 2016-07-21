@@ -7,6 +7,7 @@ public class User {
 
     private String id ;
     private String phone ;
+    private String name ;
     private String gender ;
     private int age ;
     private String email ;
@@ -58,11 +59,20 @@ public class User {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +

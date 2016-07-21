@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private User focusUser;
 
     private EditText phoneEditText;
+    private TextView nameTextView;
+    private TextView pointsTextView;
     private Button enterButton;
     private LinearLayout actionLayout;
     private LinearLayout userInfoLayout;
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         actionLayout = (LinearLayout) findViewById(R.id.action_layout);
         userInfoLayout = (LinearLayout) findViewById(R.id.user_info_layout);
+        nameTextView = (TextView) findViewById(R.id.name_text_view);
+        pointsTextView = (TextView) findViewById(R.id.point_counts_text_view);
 
         // Phone
         phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
@@ -71,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                     if (phoneEditText != null && !phoneEditText.getText().toString().equals("")){
                         final String phone = phoneEditText.getText().toString();
 
+                        // TODO add progressbar
+                        
                         // Query for user
                         final Query queryRef = userRef.orderByChild("phone").equalTo(phone);
                         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     focusUser = null;
                     reviewUserStep();
+                    // Clean User Info
+                    phoneEditText.setText("");
+                    pointsTextView.setText("");
+                    nameTextView.setText("");
                 }
             });
         }
@@ -137,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Add points
-
+                    if (focusUser != null && focusUser.getId() != null){
+                        Point point = new Point(focusUser.getId());
+                        pointRef.push().setValue(point);
+                        Log.d(JJCutPointCard.TAG,"point = " + point.toString());
+                    }
                 }
             });
         }
@@ -148,33 +163,42 @@ public class MainActivity extends AppCompatActivity {
         if (focusUser != null){
             // View control
             phoneEditText.clearFocus();
+            phoneEditText.setEnabled(false);
             enterButton.setVisibility(View.GONE);
             userInfoLayout.setVisibility(View.VISIBLE);
-            userInfoLayout.setVisibility(View.VISIBLE);
+            actionLayout.setVisibility(View.VISIBLE);
 
             // Query for user's point
             Query queryRef = pointRef.orderByChild("owner").equalTo(focusUser.getId());
             queryRef.addValueEventListener(userPointsListener);
 
-
         } else {
             // View control
+            phoneEditText.setEnabled(true);
             enterButton.setVisibility(View.VISIBLE);
             userInfoLayout.setVisibility(View.GONE);
-            userInfoLayout.setVisibility(View.GONE);
+            actionLayout.setVisibility(View.GONE);
         }
     }
+
 
 
     ValueEventListener userPointsListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
 
-            Log.d(JJCutPointCard.TAG, "points count = " + dataSnapshot.getChildrenCount());
-            // TODO Show points
+            // Show points
+            pointsTextView.setText(getString(R.string.points_count, dataSnapshot.getChildrenCount()));
+//            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                Point point = snapshot.getValue(Point.class);
+//                Log.d(JJCutPointCard.TAG, "point = " + point.toString());
+//            }
 
-            if (dataSnapshot.getValue() != null){
-                // TODO Show name
+            // Show name
+            if (focusUser != null && focusUser.getName() != null){
+                nameTextView.setText(focusUser.getName());
+            } else {
+                nameTextView.setText(getString(R.string.user_name_null));
             }
         }
 

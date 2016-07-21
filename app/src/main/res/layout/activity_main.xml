@@ -9,28 +9,110 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tw.chikuo.jjcutpointcardpos.MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="J&amp;J快速剪髮 集點系統"
+        android:id="@+id/title_text_view"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:hint="請輸入手機號碼"
-            android:id="@+id/phone_edit_text"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_height="wrap_content">
 
-        <Button
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:hint="請輸入手機號碼"
+                android:text="09999999999"
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:background="@drawable/edittext_rounded"
+                android:id="@+id/phone_edit_text"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="enter"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
+                android:id="@+id/enter_button"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="enter"
-            android:id="@+id/enter_button" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/user_info_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_name_null"
+                android:textSize="25dp"
+                android:id="@+id/textView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/points_count"
+                android:padding="20dp"
+                android:textSize="25dp"
+                android:id="@+id/point_counts_text_view" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/action_layout">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/stamp_button"
+                android:layout_marginRight="20dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_stamp2" />
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/exchange_button"
+                android:layout_marginRight="20dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_signup2" />
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/done_button"
+                android:layout_marginRight="20dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_ok1" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 

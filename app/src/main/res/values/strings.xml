@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JJCutPointCardPos</string>
+    <string name="points_count">共 %1$d 點</string>
+    <string name="user_name_null">無會員</string>
 </resources>

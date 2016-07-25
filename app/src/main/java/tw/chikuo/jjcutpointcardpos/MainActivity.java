@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -17,6 +18,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +27,15 @@ public class MainActivity extends AppCompatActivity {
     private Firebase pointRef;
     private User focusUser;
 
-    private EditText phoneEditText;
     private TextView nameTextView;
     private TextView pointsTextView;
-    private Button enterButton;
+    private TextView branchTextView;
+//    private Button enterButton;
     private LinearLayout actionLayout;
     private LinearLayout userInfoLayout;
+    private LinearLayout controlLayout;
 
+    private EditText phoneEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,62 +60,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        initControlButton();
+
         actionLayout = (LinearLayout) findViewById(R.id.action_layout);
         userInfoLayout = (LinearLayout) findViewById(R.id.user_info_layout);
+        controlLayout = (LinearLayout) findViewById(R.id.control_layout);
         nameTextView = (TextView) findViewById(R.id.name_text_view);
         pointsTextView = (TextView) findViewById(R.id.point_counts_text_view);
 
+        // Branch name
+        branchTextView = (TextView) findViewById(R.id.branch_text_view);
+        if (branchTextView != null){
+            branchTextView.setText(JJCutPointCard.CURRENT_BRANCH_NAME);
+        }
+
         // Phone
         phoneEditText = (EditText) findViewById(R.id.phone_edit_text);
-
-        // Phone Enter
-        enterButton = (Button) findViewById(R.id.enter_button);
-        if (enterButton != null){
-            enterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    // TODO Check user input
-
-                    if (phoneEditText != null && !phoneEditText.getText().toString().equals("")){
-                        final String phone = phoneEditText.getText().toString();
-
-                        // TODO add progressbar
-                        
-                        // Query for user
-                        final Query queryRef = userRef.orderByChild("phone").equalTo(phone);
-                        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() == null){
-                                    // Save new user
-                                    focusUser = new User(phone);
-                                    userRef.push().setValue(focusUser);
-
-                                    // Query again to find user id
-                                    enterButton.performClick();
-
-                                } else {
-                                    // Phone already exist
-                                    for (DataSnapshot eachData : dataSnapshot.getChildren()) {
-                                        focusUser = eachData.getValue(User.class);
-                                        focusUser.setId(eachData.getKey());
-
-                                        reviewUserStep();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-                                Log.d(JJCutPointCard.TAG,"Query user phone failed.");
-                            }
-                        });
-                    }
-
-                }
-            });
-        }
 
         // Done Button
         ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
@@ -159,12 +123,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void submitForQuery(final String phone) {
+
+        controlLayout.setVisibility(View.GONE);
+
+        final Query queryRef = userRef.orderByChild("phone").equalTo(phone);
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null){
+                    // Save new user
+                    focusUser = new User(phone);
+                    userRef.push().setValue(focusUser);
+
+                    // Query again to find user id
+                    submitForQuery(phone);
+
+                } else {
+                    // Phone already exist
+                    for (DataSnapshot eachData : dataSnapshot.getChildren()) {
+                        focusUser = eachData.getValue(User.class);
+                        focusUser.setId(eachData.getKey());
+
+                        reviewUserStep();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d(JJCutPointCard.TAG, "Query user phone failed.");
+                controlLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     private void reviewUserStep() {
         if (focusUser != null){
             // View control
-            phoneEditText.clearFocus();
-            phoneEditText.setEnabled(false);
-            enterButton.setVisibility(View.GONE);
+            controlLayout.setVisibility(View.GONE);
             userInfoLayout.setVisibility(View.VISIBLE);
             actionLayout.setVisibility(View.VISIBLE);
 
@@ -174,8 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // View control
-            phoneEditText.setEnabled(true);
-            enterButton.setVisibility(View.VISIBLE);
+            controlLayout.setVisibility(View.VISIBLE);
             userInfoLayout.setVisibility(View.GONE);
             actionLayout.setVisibility(View.GONE);
         }
@@ -208,4 +204,109 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener controlButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.zero:
+                    phoneEditText.setText(phoneEditText.getText() + "0");
+                    break;
+                case R.id.one:
+                    phoneEditText.setText(phoneEditText.getText() + "1");
+                    break;
+                case R.id.two:
+                    phoneEditText.setText(phoneEditText.getText() + "2");
+                    break;
+                case R.id.three:
+                    phoneEditText.setText(phoneEditText.getText() + "3");
+                    break;
+                case R.id.four:
+                    phoneEditText.setText(phoneEditText.getText() + "4");
+                    break;
+                case R.id.five:
+                    phoneEditText.setText(phoneEditText.getText() + "5");
+                    break;
+                case R.id.six:
+                    phoneEditText.setText(phoneEditText.getText() + "6");
+                    break;
+                case R.id.seven:
+                    phoneEditText.setText(phoneEditText.getText() + "7");
+                    break;
+                case R.id.eight:
+                    phoneEditText.setText(phoneEditText.getText() + "8");
+                    break;
+                case R.id.nine:
+                    phoneEditText.setText(phoneEditText.getText() + "9");
+                    break;
+                case R.id.ac:
+                    phoneEditText.setText("");
+                    break;
+                case R.id.enter:
+                    // TODO
+
+                    if (phoneEditText != null && !phoneEditText.getText().toString().equals("")
+                            && phoneEditText.getText().toString().length() == 10){
+                        // Query for user
+                        final String phone = phoneEditText.getText().toString();
+                        submitForQuery(phone);
+                    } else {
+                        Toast.makeText(MainActivity.this, "輸入格式錯誤喔！", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+            }
+        }
+    };
+
+    private void initControlButton() {
+        Button zero = (Button) findViewById(R.id.zero);
+        Button one = (Button) findViewById(R.id.one);
+        Button two = (Button) findViewById(R.id.two);
+        Button three = (Button) findViewById(R.id.three);
+        Button four = (Button) findViewById(R.id.four);
+        Button five = (Button) findViewById(R.id.five);
+        Button six = (Button) findViewById(R.id.six);
+        Button seven = (Button) findViewById(R.id.seven);
+        Button eight = (Button) findViewById(R.id.eight);
+        Button nine = (Button) findViewById(R.id.nine);
+        Button ac = (Button) findViewById(R.id.ac);
+        Button enter = (Button) findViewById(R.id.enter);
+        if (zero != null) {
+            zero.setOnClickListener(controlButtonListener);
+        }
+        if (one != null) {
+            one.setOnClickListener(controlButtonListener);
+        }
+        if (two != null) {
+            two.setOnClickListener(controlButtonListener);
+        }
+        if (three != null) {
+            three.setOnClickListener(controlButtonListener);
+        }
+        if (four != null) {
+            four.setOnClickListener(controlButtonListener);
+        }
+        if (five != null) {
+            five.setOnClickListener(controlButtonListener);
+        }
+        if (six != null) {
+            six.setOnClickListener(controlButtonListener);
+        }
+        if (seven != null) {
+            seven.setOnClickListener(controlButtonListener);
+        }
+        if (eight != null) {
+            eight.setOnClickListener(controlButtonListener);
+        }
+        if (nine != null) {
+            nine.setOnClickListener(controlButtonListener);
+        }
+        if (ac != null) {
+            ac.setOnClickListener(controlButtonListener);
+        }
+        if (enter != null) {
+            enter.setOnClickListener(controlButtonListener);
+        }
+    }
 }

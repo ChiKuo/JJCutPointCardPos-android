@@ -2,4 +2,6 @@
     <string name="app_name">JJCutPointCardPos</string>
     <string name="points_count">共 %1$d 點</string>
     <string name="user_name_null">未註冊</string>
+    <string name="input_format_error">輸入格式錯誤</string>
+    <string name="input_require">必填欄位</string>
 </resources>

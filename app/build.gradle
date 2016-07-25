@@ -34,6 +34,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     // Firebase
     compile 'com.firebase:firebase-client-android:2.5.2+'
+    // Validator
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
